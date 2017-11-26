@@ -46,7 +46,9 @@ class _got_database:
 
   def get_birth_year(self, character):
     if character not in self.character_info:
-      pass
+      return -1
+
+    return self.character_info[character]['dateofbirth']
       
 
   def get_death_year(self, character):
@@ -69,6 +71,6 @@ class _got_database:
 
   def get_title(self, character):
     if character not in self.predictions:
-      return ""
+      return -1
 
     return self.predictions[character]['title']
