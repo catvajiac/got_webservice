@@ -18,4 +18,6 @@ Game of Thrones Webservice for paradigms final project
 
   API methods are tested in test.py.
 
+  By default, `load_files()` looks for data to be in `data` directory.
+
 All data comes from https://www.kaggle.com/mylesoneill/game-of-thrones/data.

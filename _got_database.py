@@ -4,8 +4,7 @@ class _got_database:
   def __init__(self):
     pass
 
-  def load_files(self, dir='.'):
-    #self.battles = self._load_file('battles.csv', 2, dir)
+  def load_files(self, dir='data'):
     self.character_info = self._load_file('character-deaths.csv', 0, dir)
     predictions = self._load_file('character-predictions.csv', 5, dir)
 
@@ -17,13 +16,17 @@ class _got_database:
       if character not in self.character_info:
         self.character_info[character] = predictions[character]
 
-  def _load_file(self, file, key, dir='.'):
+  def _load_file(self, file, key, dir):
     with open('{}/{}'.format(dir, file), 'r') as f:
       data = [line.strip().split(',') for line in f.readlines()]
+
+      # csv headers
       labels = [label.lower().replace(' ', '_') for label in data.pop(0)]
 
+      # selectively turns items into integers if applicable
       ints = lambda x: int(x) if x.isdigit() else x
 
+      # formats data as {'Arya Stark': {'isalive': 1, ...}}
       return {line[key]: {k: ints(v) for k, v in zip(labels, line)} for line in data}
 
   def is_dead(self, character):
@@ -68,7 +71,6 @@ class _got_database:
       return -1
 
     return self.character_info[character]['book_of_death']
-
 
   def get_death_chapter(self, character):
     if character not in self.character_info:
