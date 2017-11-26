@@ -13,12 +13,18 @@ class _got_database:
       if character in predictions:
         self.character_info[character].update(predictions[character])
 
+    for character in predictions:
+      if character not in self.character_info:
+        self.character_info[character] = predictions[character]
+
   def _load_file(self, file, key, dir='.'):
     with open('{}/{}'.format(dir, file), 'r') as f:
       data = [line.strip().split(',') for line in f.readlines()]
       labels = [label.lower().replace(' ', '_') for label in data.pop(0)]
 
-      return {line[key]: {k: v for k, v in zip(labels, line)} for line in data}
+      ints = lambda x: int(x) if x.isdigit() else x
+
+      return {line[key]: {k: ints(v) for k, v in zip(labels, line)} for line in data}
 
   def is_dead(self, character):
     if character not in self.character_info:
@@ -36,13 +42,13 @@ class _got_database:
     if character not in self.character_info:
       return -1
 
-    return 'Noble' if self.character_info[character]['nobility'] else 'Commoner'
+    return 'Noble' if self.character_info[character]['isnoble'] else 'Commoner'
 
   def get_house(self, character):
     if character not in self.character_info:
       return -1
 
-    return self.character_info[character]['allegiances']
+    return self.character_info[character]['allegiances'].strip('House ')
 
   def get_birth_year(self, character):
     if character not in self.character_info:
@@ -61,6 +67,13 @@ class _got_database:
     if character not in self.character_info:
       return -1
 
+    return self.character_info[character]['book_of_death']
+
+
+  def get_death_chapter(self, character):
+    if character not in self.character_info:
+      return -1
+
     return self.character_info[character]['death_chapter']
 
   def get_intro_chapter(self, character):
@@ -70,7 +83,7 @@ class _got_database:
     return self.character_info[character]['book_intro_chapter']
 
   def get_title(self, character):
-    if character not in self.predictions:
+    if character not in self.character_info:
       return -1
 
-    return self.predictions[character]['title']
+    return self.character_info[character]['title']
