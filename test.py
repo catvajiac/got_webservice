@@ -5,20 +5,30 @@ import unittest
 
 class DatabaseUtils(unittest.TestCase):
   db = _got_database._got_database()
-  db.load_files(dir="data")
 
   def test_get_houses(self):
-    pass
+    houses = self.db.get_houses()
+    self.assertTrue('Stark' in houses)
+    self.assertTrue('Lannister' in houses)
+    self.assertFalse('not a house' in houses)
+
+  def test_get_books(self):
+    books = self.db.get_books()
+    self.assertEqual(books[1]['num_deaths'], 47)
+    self.assertEqual(books[1]['num_intros'], 386)
+    self.assertTrue('Arya Stark' in books[1]['intros'])
+    self.assertTrue('Eddard Stark' in books[1]['dead'])
+
+  def test_get_book(self):
+    book = self.db.get_book(1)
+    self.assertEqual(book['num_deaths'], 47)
+    self.assertTrue('Arya Stark' in book['intros'])
+    self.assertTrue('Eddard Stark' in book['dead'])
 
   def test_is_alive(self):
     self.assertEqual(self.db.is_alive('Arya Stark'), True)
     self.assertEqual(self.db.is_alive('Eddard Stark'), False)
     self.assertEqual(self.db.is_alive('not a character'), -1)
-
-  def test_get_dead(self):
-    self.assertTrue('Jon Snow' not in self.db.get_dead())
-    self.assertTrue('Arya Stark' not in self.db.get_dead())
-    self.assertTrue('Drogo' in self.db.get_dead())
 
   def test_get_gender(self):
     self.assertEqual(self.db.get_gender('Aegon Targaryen'), 'Male')
@@ -75,6 +85,12 @@ class DatabaseUtils(unittest.TestCase):
     self.assertTrue('Eddard Stark' in self.db.get_book_deaths(1))
     self.assertTrue('Joffrey Baratheon' in self.db.get_book_deaths(3))
     self.assertTrue('Arya Stark' not in self.db.get_book_deaths(4))
+
+  def test_get_book_intros(self):
+    print self.db.get_intro_book('Ramsay Snow')
+    self.assertTrue('Eddard Stark' in self.db.get_book_intros(1))
+    self.assertTrue('Benjen Stark' in self.db.get_book_intros(1))
+    self.assertTrue('Ramsay Snow' in self.db.get_book_intros(2))
 
 if __name__ == '__main__':
   unittest.main()
