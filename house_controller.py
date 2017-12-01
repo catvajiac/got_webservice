@@ -5,7 +5,7 @@ import cherrypy, json
 class house_controller(object):
   
   def __init__(self, database):
-    self.database = databse
+    self.database = database
 
   def GET(self, house_name=None):
     output = { "result" : "success" }

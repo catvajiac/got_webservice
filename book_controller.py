@@ -5,7 +5,7 @@ import cherrypy, json
 class book_controller(object):
   
   def __init__(self, database):
-    self.database = databse
+    self.database = database
 
   def GET(self, book=None):
     output = { "result" : "success" }
