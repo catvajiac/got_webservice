@@ -13,6 +13,7 @@ class character_controller(object):
     if not char_name:
       output["names"] = self.database.get_characters()
     else:
+      char_name = char_name.replace('_', ' ')
       if char_name in self.database.characters:
         output = self.database.get_character(char_name)
         output["result"] = "success"
