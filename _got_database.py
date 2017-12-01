@@ -34,13 +34,13 @@ class _got_database:
     houses = {k: [] for k in self.get_houses()}
     for k, v in self.characters.items():
       house = self.get_house(k)
-      if house > 0:
+      if house != -1:
         houses[house].append(k)
     return houses
 
   def _load_dead(self):
     dead = lambda x: not self.is_alive(x)
-    return filter(dead, self.get_characters())
+    return list(filter(dead, self.get_characters()))
 
   def _load_books(self):
     return {k: {
@@ -117,7 +117,7 @@ class _got_database:
     key = 'book_of_death'
 
     match = lambda x: key in self.characters[x] and self.characters[x][key] == book
-    return filter(match, self.dead)
+    return list(filter(match, self.dead))
 
   def get_book_intros(self, book):
-    return filter(lambda x: self.get_intro_book(x) == book, self.get_characters())
+    return list(filter(lambda x: self.get_intro_book(x) == book, self.get_characters()))
