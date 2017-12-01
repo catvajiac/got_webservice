@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 
 import csv
+import json
 
 class _got_database:
   def __init__(self):
@@ -12,6 +13,7 @@ class _got_database:
   def _load_files(self, dir='data'):
     self.characters = self._load_file('character-deaths.csv', 'name', dir)
     predictions = self._load_file('character-predictions.csv', 'name', dir)
+
     # hack to merge things
     for character in self.characters:
       if character in predictions:
@@ -91,6 +93,42 @@ class _got_database:
 
   def get_character(self, char_name):
     return self.characters[char_name]
+
+  def get_birth_year(self, char_name):
+    return self.get_field(char_name, 'date_of_birth')
+
+  def get_death_year(self, char_name):
+    return self.get_field(char_name, 'death_year')
+
+  def get_death_book(self, char_name):
+    return self.get_field(char_name, 'book_of_death')
+
+  def get_death_chapter(self, char_name):
+    return self.get_field(char_name, 'death_chapter')
+
+  def get_gender(self, char_name):
+    if char_name in self.characters:
+      gender = self.get_field(char_name, 'gender')
+      if(gender):
+        return 'Male'
+      return 'Female'
+    else:
+      return -1
+
+  def get_intro_chapter(self, char_name):
+    return self.get_field(char_name, 'book_intro_chapter')
+
+  def get_nobility(self, char_name):
+    if char_name in self.characters:
+      is_noble = self.get_field(char_name, 'nobility')
+      if(is_noble):
+        return 'Noble'
+      return 'Commoner'
+    else:
+      return -1
+
+  def get_title(self, char_name):
+    return self.get_field(char_name, 'title')
 
   # FOR HOUSE CONTROLLER
   def get_houses(self):
