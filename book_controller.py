@@ -11,11 +11,12 @@ class book_controller(object):
     output = { "result" : "success" }
 
     if book:
+      book = int(book)
       if book in self.database.books:
-        output = self.database.books[book]
+        output = self.database.get_book(book)
         output["result"] = "success"
     else:
-      output = self.database.books
+      output = self.database.get_books()
 
     if not output:
       output = { "result" : "error" }

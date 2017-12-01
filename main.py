@@ -45,7 +45,7 @@ def start_service():
     conditions=dict(method=['GET']))
 
   #GET (house_name)
-  dispatcher.connect('house_get_house_name', '/houses/:house_name', controller=char_c, 
+  dispatcher.connect('house_get_house_name', '/houses/:house_name', controller=house_c, 
     action='GET', conditions=dict(method=['GET']))
 
   #################
@@ -77,7 +77,7 @@ def start_service():
     conditions=dict(method=['GET']))
 
   #GET (book)
-  dispatcher.connect('book_get_book', '/characters/', controller=book_c, action='GET',
+  dispatcher.connect('book_get_book', '/bookstats/:book', controller=book_c, action='GET',
     conditions=dict(method=['GET']))
 
   ##################

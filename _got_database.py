@@ -30,6 +30,7 @@ class _got_database:
 
       return {k: v for k, v in zip(keys, data)}
 
+  # TO LOAD HOUSES
   def _load_houses(self):
     houses = {k: [] for k in self.get_houses()}
     for k, v in self.characters.items():
@@ -38,10 +39,25 @@ class _got_database:
         houses[house].append(k)
     return houses
 
+  def get_house(self, char):
+    house = self.get_field(char, 'allegiances')
+    return house if house != 'None' else -1
+
+  def get_field(self, character, field):
+    try:
+      return self.characters[character][field]
+    except:
+      return -1
+
+  # TO LOAD DEATHS
   def _load_dead(self):
     dead = lambda x: not self.is_alive(x)
     return list(filter(dead, self.get_characters()))
 
+  def is_alive(self, character):
+    return self.get_field(character, 'is_alive')
+
+  # TO LOAD BOOKS
   def _load_books(self):
     return {k: {
       'num_deaths': len(self.get_book_deaths(k)),
@@ -50,74 +66,50 @@ class _got_database:
       'intros': self.get_book_intros(k) 
       } for k in range(1, 6)}
 
+  def get_book_deaths(self, book):
+    key = 'book_of_death'
+    match = lambda x: key in self.characters[x] and self.characters[x][key] == book
+    return list(filter(match, self.dead))
+
+  def get_book_intros(self, book):
+    return list(filter(lambda x: self.get_intro_book(x) == book, self.get_characters()))
+
+  def get_intro_book(self, char):
+    book = [self.get_field(char, 'book{}'.format(i+1)) for i in range(5)]
+    return book.index(1) + 1 if 1 in book else 0
+
+  # FOR BOOK CONTROLLER
   def get_books(self):
     return self.books
 
   def get_book(self, book):
     return self.books[book]
 
+  # FOR CHARACTER CONTROLLER
   def get_characters(self):
-    return self.characters.keys()
+    return list(self.characters.keys())
 
+  def get_character(self, char_name):
+    return self.characters[char_name]
+
+  # FOR HOUSE CONTROLLER
   def get_houses(self):
     key = 'allegiances'
     house = lambda x: x[key] if key in x and x[key] != 'None' else ''
-    return set(house(v) for k, v in self.characters.items()) - set('')
+    houses = set(house(v) for k, v in self.characters.items()) - set('')
+    return list(houses)
 
-  def get_field(self, character, field):
-    try:
-      return self.characters[character][field]
-    except:
-      return -1
+  # DEAD CONTROLLER
+  def get_dead(self):
+    return self.dead
 
-  def is_alive(self, character):
-    return self.get_field(character, 'is_alive')
+  def get_dead_by_book(self, book):
+    return self.books[book]['dead']
 
-
-  def get_gender(self, character):
-    try:
-      return 'Male' if self.characters[character]['gender'] else 'Female'
-    except:
-      return -1
-
-
-  def get_nobility(self, character):
-    try:
-      return 'Noble' if self.characters[character]['nobility'] else 'Commoner'
-    except:
-      return -1
-
-  def get_house(self, char):
-    house = self.get_field(char, 'allegiances')
-    return house if house != 'None' else -1
-
-  def get_birth_year(self, char):
-    return self.get_field(char, 'date_of_birth')
-
-  def get_death_year(self, char):
-    return self.get_field(char, 'death_year')
-
-  def get_death_book(self, char):
-    return self.get_field(char, 'book_of_death')
-
-  def get_intro_book(self, char):
-    book = [self.get_field(char, 'book{}'.format(i+1)) for i in range(5)]
-    return book.index(1) + 1 if 1 in book else 0
-
-  def get_death_chapter(self, char):
-    return self.get_field(char, 'death_chapter')
-
-  def get_intro_chapter(self, char):
-    return self.get_field(char, 'book_intro_chapter')
-
-  def get_title(self, char):
-    return self.get_field(char, 'title')
-
-  def get_book_deaths(self, book):
-    key = 'book_of_death'
-
-    match = lambda x: key in self.characters[x] and self.characters[x][key] == book
-    return list(filter(match, self.dead))
-
-  def get_book_intros(self, book):
-    return list(filter(lambda x: self.get_intro_book(x) == book, self.get_characters()))
+  def get_dead_by_house(self, house_name):
+    names = self.houses[house_name]
+    deadlist = []
+    for c in names:
+      if c in self.dead:
+        deadlist.append[c]
+    return deadlist

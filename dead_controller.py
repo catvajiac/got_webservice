@@ -7,20 +7,15 @@ class dead_controller(object):
   def __init__(self, database):
     self.database = database
 
-  def GET(self, house_name=None, book=None):
+  def GET(self, book=None):
     output = { "result" : "success" }
 
-    if house_name:
-      if house_name in self.database.houses:
-        #TODO: get dead people by house
-        output = self.database.dead
-        output["result"] = "success"
-    elif book:
+    if book:
+      book = int(book)
       if book in self.database.books:
-        output = self.database.books[book][dead]
-        output["result"] = "success"
+        output['dead'] = self.database.get_dead_by_book(book)
     else:
-      output["names"] = self.database.get_dead()
+      output["dead"] = self.database.get_dead()
 
     if not output:
       output = { "result" : "error" }

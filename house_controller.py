@@ -11,11 +11,10 @@ class house_controller(object):
     output = { "result" : "success" }
 
     if not house_name:
-      output["names"] = self.database.get_houses()
+      output["houses"] = self.database.get_houses()
     else:
       if house_name in self.database.houses:
-        output = self.database.houses[house_name]
-        output["result"] = "success"
+        output["names"] = self.database.houses[house_name]
 
     if not output:
       output = { "result" : "error" }

@@ -14,7 +14,7 @@ class character_controller(object):
       output["names"] = self.database.get_characters()
     else:
       if char_name in self.database.characters:
-        output = self.get_character(char_name)
+        output = self.database.get_character(char_name)
         output["result"] = "success"
 
     if not output:
