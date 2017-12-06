@@ -6,6 +6,13 @@ from character_controller import character_controller
 from house_controller import house_controller
 from dead_controller import dead_controller
 from book_controller import book_controller
+from options_controller import options_controller 
+
+def CORS():
+    cherrypy.response.headers["Access-Control-Allow-Origin"] = "*"
+    cherrypy.response.headers["Access-Control-Allow-Methods"] = "GET, PUT, POST, DELETE, OPTIONS"
+    cherrypy.response.headers["Access-Control-Allow-Credentials"] = "*"
+
 
 #######################
 ## CREATE DISPATCHER ##
@@ -14,10 +21,12 @@ from book_controller import book_controller
 def start_service():
   dispatcher = cherrypy.dispatch.RoutesDispatcher()
   conf = { 'global' : { 'server.socket_host' : 'localhost', 
-                        'server.socket_port' : 7000
+                        'server.socket_port' :51062,
+                        'tools.CORS.on': True
                       },
            '/'      : { 'request.dispatch' : dispatcher }
          }
+
   database = _got_database()
 
   ######################
@@ -62,9 +71,6 @@ def start_service():
   dispatcher.connect('dead_get_book', '/dead/:book', controller=dead_c, action='GET',
     conditions=dict(method=['GET']))
 
-  #GET (house_name)
-  dispatcher.connect('dead_get_house_name', '/dead/:house_name', controller=dead_c, action='GET',
-    conditions=dict(method=['GET']))
 
   #################
   #BOOK CONTROLLER#
@@ -93,4 +99,5 @@ def start_service():
 ###################
 
 if __name__ == "__main__":
+  cherrypy.tools.CORS = cherrypy.Tool('before_finalize', CORS)
   start_service()
