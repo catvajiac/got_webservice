@@ -1,0 +1,41 @@
+body {
+  font-family: 'Raleway';
+  font-size: 13px;
+  color: white;
+  background-color: #000000;
+  background-image: url(./images/hexellence.png);
+  background-repeat: repeat;
+}
+
+button {
+  border-radius: 8px;
+}
+
+input {
+  color: white;
+  background: transparent;
+}
+
+.url {
+  float: left;
+  min-width: 10em;
+}
+
+buton {
+  padding-left: 15px;
+}
+
+#got_title {
+  font-family: 'Cinzel';
+  text-align: center;
+  font-size: 40px;
+}
+
+#got_info {
+  font-family: 'Cinzel';
+  text-align: center;
+}
+
+#output_label {
+  font-size: 15px;
+}

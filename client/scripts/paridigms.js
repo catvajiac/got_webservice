@@ -19,7 +19,14 @@ function InputBox() {
 		this.item = document.createElement("form")
 
 		// Add Text To Form Item
-		var t = document.createTextNode(name + " ")
+		//var t = document.createTextNode(name + " ")
+
+    var thing = document.createElement("br")
+    document.body.appendChild(thing)
+    
+    var t = document.createElement("p")
+    t.innerHTML = name
+    t.setAttribute("class", "url")
 		this.item.appendChild(t)
 
 		// Add Input Box to Form Item
@@ -29,17 +36,19 @@ function InputBox() {
 
 		// Add Submit Button to Form Item
 		this.submit = document.createElement("buton")
+    this.submit.setAttribute("class", "submit")
 		this.submit.innerHTML = "Submit"
 		this.item.appendChild(this.submit)
 	},
 
-	this.addClickEventHandler = function(handler, args){
-		this.submit.onmouseup = function(){handler(args);};
+	this.addClickEventHandler = function(handler, args){ this.submit.onmouseup = function(){
+      handler(args);
+    };
 	},
 
 	this.getValue = function() {
 		return this.input.value
-	}, // End of Get Value 
+	},
 
 
 	this.addToDocument = function() {
@@ -52,7 +61,7 @@ function Label() {
 	this.createLabel = function(text, id){
 		this.item = document.createElement("p");
 		this.item.setAttribute("id", id);
-		this.item.setAttribute("class", "labelClass");
+		this.item.setAttribute("class", "url");
 		var textLabel = document.createTextNode(text);
 		this.item.appendChild(textLabel);
 	},
