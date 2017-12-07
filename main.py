@@ -8,11 +8,6 @@ from dead_controller import dead_controller
 from book_controller import book_controller
 from options_controller import options_controller 
 
-def CORS():
-    cherrypy.response.headers["Access-Control-Allow-Origin"] = "*"
-    cherrypy.response.headers["Access-Control-Allow-Methods"] = "GET, PUT, POST, DELETE, OPTIONS"
-    cherrypy.response.headers["Access-Control-Allow-Credentials"] = "*"
-
 
 #######################
 ## CREATE DISPATCHER ##
@@ -22,7 +17,6 @@ def start_service():
   dispatcher = cherrypy.dispatch.RoutesDispatcher()
   conf = { 'global' : { 'server.socket_host' : 'localhost', 
                         'server.socket_port' :51062,
-                        'tools.CORS.on': True
                       },
            '/'      : { 'request.dispatch' : dispatcher }
          }
@@ -99,5 +93,4 @@ def start_service():
 ###################
 
 if __name__ == "__main__":
-  cherrypy.tools.CORS = cherrypy.Tool('before_finalize', CORS)
   start_service()
